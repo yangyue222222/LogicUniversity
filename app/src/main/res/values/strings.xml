@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">LogicUniversity</string>
+    <string name="btnGet">Retrieve Disbursements</string>
+</resources>
