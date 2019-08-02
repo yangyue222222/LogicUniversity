@@ -36,9 +36,8 @@ public class DisburseList extends AppCompatActivity implements View.OnClickListe
             for (int i = 0; i < jsonArr.length()-1; i++) {
                 JSONObject jsonobject = jsonArr.getJSONObject(i);
                 id = jsonobject.getString("DisbursementId");
-                JSONObject dept = jsonobject.getJSONObject("DepartmentId");
-                deptName = dept.getString("DepartmentName");
-                representative = dept.getString("Representative");
+                deptName = jsonobject.getString("DepartmentName");
+                representative = jsonobject.getString("Representative");
                 Disbursement d = new Disbursement(id, deptName, representative);
                 dl.add(d);
             }

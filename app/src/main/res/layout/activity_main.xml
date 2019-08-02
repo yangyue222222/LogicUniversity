@@ -13,12 +13,17 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="center">
-
+        <Button
+            android:id="@+id/btnSRF"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btnSRF" />
 
         <Button
             android:id="@+id/btnGet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/btnGet" />
+
     </LinearLayout>
 </LinearLayout>

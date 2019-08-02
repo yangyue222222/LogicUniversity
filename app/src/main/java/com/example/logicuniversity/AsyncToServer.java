@@ -29,6 +29,7 @@ public class AsyncToServer extends AsyncTask<Command, Void, JSONArray> {
 
             // send data
             if (cmd.data != null) {
+                System.out.println(cmd.data.toString());
                 conn.setDoOutput(true);
                 conn.setRequestMethod("POST");
                 conn.setRequestProperty("Content-Type", "application/json; charset=utf-8");

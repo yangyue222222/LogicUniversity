@@ -47,10 +47,9 @@ public class DisburseOrder extends AppCompatActivity implements AsyncToServer.IS
                     for(int j = 0; j < disDetails.length(); j++) {
                         JSONObject singleDetail = disDetails.getJSONObject(j);
                         System.out.println(singleDetail);
-                        qty = singleDetail.getString("Qty");
-                        JSONObject item = singleDetail.getJSONObject("ItemId");
-                        description = item.getString("Description");
-                        itemId = item.getString("ItemId");
+                        qty = singleDetail.getString("Quantity");
+                        description = singleDetail.getString("ItemName");
+                        itemId = singleDetail.getString("ItemId");
                         DisbursementDetail d = new DisbursementDetail(itemId, description, qty);
                         dl.add(d);
                     }
@@ -95,7 +94,7 @@ public class DisburseOrder extends AppCompatActivity implements AsyncToServer.IS
             int checksum = jsonArr.getInt(jsonArr.length()-1);
             if(checksum == 2){
                 Toast.makeText(this,"Disbursement recorded", Toast.LENGTH_LONG).show();
-                Command cmd = new Command(this, 0,"http://10.0.2.2:50742/Disbursement/GetDisbursements", null);
+                Command cmd = new Command(this, 0,"http://10.0.2.2:50271/Disbursement/GetDisbursements", null);
                 new AsyncToServer().execute(cmd);
             }
             if(checksum == 0){
@@ -128,7 +127,7 @@ public class DisburseOrder extends AppCompatActivity implements AsyncToServer.IS
             JSONArray confirmation = new JSONArray(output);
             confirmation.put(disburseId);
             System.out.println(confirmation.toString());
-            Command cmd = new Command(this, 2,"http://10.0.2.2:50742/Disbursement/UpdateDisbursement", confirmation);
+            Command cmd = new Command(this, 2,"http://10.0.2.2:50271/Disbursement/UpdateDisbursement", confirmation);
             new AsyncToServer().execute(cmd);
         }
     }
