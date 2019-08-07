@@ -1,7 +1,6 @@
 package com.example.logicuniversity;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 public class Command {
     protected AsyncToServer.IServerResponse callback;

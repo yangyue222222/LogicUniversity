@@ -39,6 +39,7 @@ public class DisburseOrder extends AppCompatActivity implements AsyncToServer.IS
             String qty;
             String description;
             String itemId;
+            String ddid;
             for (int i = 0; i < jsonArr.length()-1; i++) {
                 JSONObject disbursement = jsonArr.getJSONObject(i);
                 if(disbursement.getString("DisbursementId").compareTo(disburseId) == 0) {
@@ -47,10 +48,11 @@ public class DisburseOrder extends AppCompatActivity implements AsyncToServer.IS
                     for(int j = 0; j < disDetails.length(); j++) {
                         JSONObject singleDetail = disDetails.getJSONObject(j);
                         System.out.println(singleDetail);
+                        ddid = singleDetail.getString("DisbursementDetailId");
                         qty = singleDetail.getString("Quantity");
                         description = singleDetail.getString("ItemName");
                         itemId = singleDetail.getString("ItemId");
-                        DisbursementDetail d = new DisbursementDetail(itemId, description, qty);
+                        DisbursementDetail d = new DisbursementDetail(ddid, itemId, description, qty);
                         dl.add(d);
                     }
                 }
@@ -72,14 +74,14 @@ public class DisburseOrder extends AppCompatActivity implements AsyncToServer.IS
             tv1.setLayoutParams(p);
             order.addView(tv1);
             TextView tv2 = new TextView(this);
-            tv2.setText(dd.get("Qty"));
+            tv2.setText(dd.get("Quantity"));
             tv2.setLayoutParams(p);
             order.addView(tv2);
             EditText input = new EditText(this);
             input.setLayoutParams(p);
             input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
             input.setId(parseInt(dd.get("ItemId")));
-            input.setText(dd.get("Qty"));
+            input.setText(dd.get("Quantity"));
             order.addView(input);
             orderDetails.addView(order);
         }
@@ -94,7 +96,7 @@ public class DisburseOrder extends AppCompatActivity implements AsyncToServer.IS
             int checksum = jsonArr.getInt(jsonArr.length()-1);
             if(checksum == 2){
                 Toast.makeText(this,"Disbursement recorded", Toast.LENGTH_LONG).show();
-                Command cmd = new Command(this, 0,"http://10.0.2.2:50271/Disbursement/GetDisbursements", null);
+                Command cmd = new Command(this, 0,"http://10.0.2.2:50271/Disbursement/DeliveriesMobile", null);
                 new AsyncToServer().execute(cmd);
             }
             if(checksum == 0){
@@ -115,19 +117,18 @@ public class DisburseOrder extends AppCompatActivity implements AsyncToServer.IS
         for(DisbursementDetail dd : dl) {
             EditText receivedQty = findViewById(parseInt(dd.get("ItemId")));
             int rQty = parseInt(receivedQty.getText().toString());
-            if(rQty > parseInt(dd.get("Qty"))){
-                Toast.makeText(this,"Can't deliver more than the specified for item "+dd.get("Description"), Toast.LENGTH_LONG).show();
+            if(rQty > parseInt(dd.get("Quantity"))) {
+                Toast.makeText(this, "Can't deliver more than the specified for item " + dd.get("Description"), Toast.LENGTH_LONG).show();
                 overdeliver = 1;
                 break;
             }
-            dd.put("deliveredQty",String.valueOf(rQty));
+            dd.put("Quantity",String.valueOf(rQty));
             output.add(dd);
         }
         if(overdeliver == 0) {
             JSONArray confirmation = new JSONArray(output);
-            confirmation.put(disburseId);
             System.out.println(confirmation.toString());
-            Command cmd = new Command(this, 2,"http://10.0.2.2:50271/Disbursement/UpdateDisbursement", confirmation);
+            Command cmd = new Command(this, 2,"http://10.0.2.2:50271/Disbursement/ReceivingMobile", confirmation);
             new AsyncToServer().execute(cmd);
         }
     }

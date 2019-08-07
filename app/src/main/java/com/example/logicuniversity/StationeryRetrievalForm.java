@@ -41,13 +41,15 @@ public class StationeryRetrievalForm extends AppCompatActivity implements AsyncT
             String id = null;
             String description = null;
             String qty = null;
+            String stockqty = null;
 
             for (int i = 0; i < jsonArr.length()-1; i++) {
                 JSONObject jsonobject = jsonArr.getJSONObject(i);
                 id = jsonobject.getString("ItemId");
                 description = jsonobject.getString("Description");
                 qty = jsonobject.getString("AllocatedQuantity");
-                RetrievalItem d = new RetrievalItem(id, description, qty);
+                stockqty = jsonobject.getString("StockQuantity");
+                RetrievalItem d = new RetrievalItem(id, description, qty, stockqty);
                 srf.add(d);
             }
         }
@@ -62,19 +64,28 @@ public class StationeryRetrievalForm extends AppCompatActivity implements AsyncT
             LinearLayout order = new LinearLayout(this);
             order.setLayoutParams(p);
             order.setOrientation(LinearLayout.HORIZONTAL);
+
             TextView tv1 = new TextView(this);
             tv1.setText(i.get("Description"));
             tv1.setLayoutParams(p);
             order.addView(tv1);
+
             TextView tv2 = new TextView(this);
-            tv2.setText(i.get("AllocatedQuantity"));
+            tv2.setText(i.get("StockQuantity"));
             tv2.setLayoutParams(p);
             order.addView(tv2);
+
+            TextView tv3 = new TextView(this);
+            tv3.setText(i.get("AllocatedQuantity"));
+            tv3.setLayoutParams(p);
+            order.addView(tv3);
+
             EditText input = new EditText(this);
             input.setLayoutParams(p);
             input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
             input.setId(parseInt(i.get("ItemId")));
             input.setText(i.get("AllocatedQuantity"));
+
             order.addView(input);
             srfList.addView(order);
         }

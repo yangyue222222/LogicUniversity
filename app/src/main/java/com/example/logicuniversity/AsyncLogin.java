@@ -3,7 +3,7 @@ package com.example.logicuniversity;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 
-import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -11,34 +11,36 @@ import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.CookieManager;
+import java.net.HttpCookie;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
+import java.util.Map;
 
-public class AsyncToServer extends AsyncTask<Command, Void, JSONArray> {
-    IServerResponse callback;
+public class AsyncLogin extends AsyncTask<LoginCommand, Void, JSONObject> {
+    AsyncLogin.IServerResponse callback;
 
-    protected JSONArray doInBackground(Command... cmds) {
-        Command cmd = cmds[0];
-        this.callback = cmd.callback;
-        JSONArray jsonArr = null;
+    protected JSONObject doInBackground(LoginCommand... lcmd) {
+        LoginCommand lc = lcmd[0];
+        this.callback = lc.callback;
         StringBuilder response = new StringBuilder();
+        JSONObject jo = null;
         CookieManager cM = new CookieManager();
 
         try {
-            URL url = new URL(cmd.endPt);
+            URL url = new URL(lc.endPt);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestProperty("Cookie", "token=ie9R6yp9PSJRJaJtdhA34w==; expires=Thu, 08-Aug-2019 08:23:03 GMT; path=/");
 
-            System.out.println("test" + cM.getCookieStore().getCookies().toString());
             // send data
-            if (cmd.data != null) {
-                System.out.println("OUTPUT");
-                System.out.println(cmd.data.toString());
+            if (lc.data != null) {
+                JSONObject login = new JSONObject(lc.data);
                 conn.setDoOutput(true);
                 conn.setRequestMethod("POST");
+                conn.setRequestProperty("Cookie", TextUtils.join(";",  cM.getCookieStore().getCookies()));
                 conn.setRequestProperty("Content-Type", "application/json; charset=utf-8");
                 DataOutputStream outstream = new DataOutputStream(conn.getOutputStream());
-                outstream.writeBytes(cmd.data.toString());
+                outstream.writeBytes(login.toString());
+
                 outstream.flush();
                 outstream.close();
             }
@@ -50,11 +52,18 @@ public class AsyncToServer extends AsyncTask<Command, Void, JSONArray> {
                 response.append(line).append('\n');
             }
 
+            Map<String, List<String>> headerFields = conn.getHeaderFields();
+            List<String> cookiesHeader = headerFields.get("Set-Cookie");
+            if (cookiesHeader != null) {
+                for (String cookie : cookiesHeader) {
+                    cM.getCookieStore().add(null, HttpCookie.parse(cookie).get(0));
+                }
+            }
+
             try {
-                jsonArr = new JSONArray(response.toString());
-                jsonArr.put(cmd.checksum);
-                System.out.println("INPUT");
-                System.out.println(jsonArr);
+                jo = new JSONObject(response.toString());
+
+                System.out.println(jo);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -62,15 +71,15 @@ public class AsyncToServer extends AsyncTask<Command, Void, JSONArray> {
             e.printStackTrace();
         }
 
-        return jsonArr;
+        return jo;
     }
 
-    protected void onPostExecute(JSONArray jsonArr) {
-        if (jsonArr != null)
-            this.callback.onServerResponse(jsonArr);
+    protected void onPostExecute(JSONObject jo) {
+        if (jo != null)
+            this.callback.onServerResponse(jo);
     }
 
     public interface IServerResponse {
-        void onServerResponse(JSONArray jsonArr);
+        void onServerResponse(JSONObject jo);
     }
 }

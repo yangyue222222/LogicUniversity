@@ -9,6 +9,8 @@ import android.widget.Button;
 
 import org.json.JSONArray;
 
+import java.net.CookieManager;
+
 public class MainActivity extends AppCompatActivity
         implements View.OnClickListener, AsyncToServer.IServerResponse {
 
@@ -23,6 +25,7 @@ public class MainActivity extends AppCompatActivity
         btnGet.setOnClickListener(this);
         btnSRF = findViewById(R.id.btnSRF);
         btnSRF.setOnClickListener(this);
+
     }
 
     @Override
