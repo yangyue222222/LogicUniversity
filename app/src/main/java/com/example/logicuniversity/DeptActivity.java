@@ -44,7 +44,7 @@ public class DeptActivity extends AppCompatActivity
                 break;
             case R.id.countersign:
                 cmd = new Command(this, 4,
-                        "http://10.0.2.2:50271/Stationery/RetrievalMobile", null);
+                        "http://10.0.2.2:50271/delivereddisbursementsmobile", null);
                 new AsyncToServer().execute(cmd);
                 break;
             case R.id.logout:
@@ -83,8 +83,8 @@ public class DeptActivity extends AppCompatActivity
             }
             if(checksum == 4){
 
-                Intent dl = new Intent(this, StationeryRetrievalForm.class);
-                dl.putExtra("srf", jsonArr.toString());
+                Intent dl = new Intent(this, DeptConfirmationList.class);
+                dl.putExtra("confirmations", jsonArr.toString());
 
                 startActivity(dl);
             }
