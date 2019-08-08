@@ -29,9 +29,9 @@ public class DisburseList extends AppCompatActivity implements View.OnClickListe
         Bundle extras = getIntent().getExtras();
         try {
             jsonArr = new JSONArray(extras.getString("disbursejson"));
-            String id = null;
-            String deptName = null;
-            String representative = null;
+            String id;
+            String deptName;
+            String representative;
 
             for (int i = 0; i < jsonArr.length()-1; i++) {
                 JSONObject jsonobject = jsonArr.getJSONObject(i);
@@ -48,7 +48,7 @@ public class DisburseList extends AppCompatActivity implements View.OnClickListe
         }
         ListView listView = findViewById(R.id.listView1);
         listView.setAdapter(new SimpleAdapter(this, dl,R.layout.disburserow,
-                new String[] {"id","deptName","repesentative"},
+                new String[] {"id","deptName","representative"},
                 new int[]{R.id.rowpt1,R.id.rowpt2,R.id.rowpt3}));
         listView.setOnItemClickListener(this);
         Button back = findViewById(R.id.back);

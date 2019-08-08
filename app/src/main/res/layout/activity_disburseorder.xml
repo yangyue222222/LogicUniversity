@@ -14,7 +14,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-
         </LinearLayout>
     </ScrollView>
 
@@ -25,12 +24,6 @@
         android:id="@+id/Confirm"
         android:layout_weight="1">
 
-        <Button
-            android:id="@+id/sign"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Sign" />
 
         <Button
             android:id="@+id/confirm"
@@ -39,12 +32,7 @@
             android:layout_weight="1"
             android:text="Confirm Delivery" />
 
-        <Button
-            android:id="@+id/report"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Report Issue" />
+
     </LinearLayout>
 
 </LinearLayout>

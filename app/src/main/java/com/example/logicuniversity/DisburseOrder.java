@@ -63,22 +63,44 @@ public class DisburseOrder extends AppCompatActivity implements AsyncToServer.IS
             e.printStackTrace();
         }
         LinearLayout orderDetails = findViewById(R.id.orderDetails);
-        LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,3F);
+        LinearLayout.LayoutParams big = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,1F);
+        LinearLayout.LayoutParams small = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,3F);
+
+        LinearLayout header = new LinearLayout(this);
+        header.setLayoutParams(big);
+        header.setOrientation(LinearLayout.HORIZONTAL);
+
+        TextView des = new TextView(this);
+        des.setText("Description");
+        des.setLayoutParams(big);
+        header.addView(des);
+
+        TextView q = new TextView(this);
+        q.setText("Qty");
+        q.setLayoutParams(small);
+        header.addView(q);
+
+        TextView ac = new TextView(this);
+        ac.setText("Actual");
+        ac.setLayoutParams(small);
+        header.addView(ac);
+
+        orderDetails.addView(header);
 
         for(DisbursementDetail dd : dl){
             LinearLayout order = new LinearLayout(this);
-            order.setLayoutParams(p);
+            order.setLayoutParams(small);
             order.setOrientation(LinearLayout.HORIZONTAL);
             TextView tv1 = new TextView(this);
             tv1.setText(dd.get("Description"));
-            tv1.setLayoutParams(p);
+            tv1.setLayoutParams(big);
             order.addView(tv1);
             TextView tv2 = new TextView(this);
             tv2.setText(dd.get("Quantity"));
-            tv2.setLayoutParams(p);
+            tv2.setLayoutParams(small);
             order.addView(tv2);
             EditText input = new EditText(this);
-            input.setLayoutParams(p);
+            input.setLayoutParams(small);
             input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
             input.setId(parseInt(dd.get("ItemId")));
             input.setText(dd.get("Quantity"));
@@ -127,7 +149,6 @@ public class DisburseOrder extends AppCompatActivity implements AsyncToServer.IS
         }
         if(overdeliver == 0) {
             JSONArray confirmation = new JSONArray(output);
-            System.out.println(confirmation.toString());
             Command cmd = new Command(this, 2,"http://10.0.2.2:50271/Disbursement/ReceivingMobile", confirmation);
             new AsyncToServer().execute(cmd);
         }

@@ -1,31 +1,31 @@
 package com.example.logicuniversity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class MainActivity extends AppCompatActivity
+public class DeptActivity extends AppCompatActivity
         implements View.OnClickListener, AsyncToServer.IServerResponse, AsyncLogin.IServerResponse {
 
-    Button btnGet;
-    Button btnSRF;
+    Button approvals;
+    Button countersign;
     Button logout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_dept);
 
-        btnGet = findViewById(R.id.btnGet);
-        btnGet.setOnClickListener(this);
-        btnSRF = findViewById(R.id.btnSRF);
-        btnSRF.setOnClickListener(this);
+        approvals = findViewById(R.id.approvals);
+        approvals.setOnClickListener(this);
+        countersign = findViewById(R.id.countersign);
+        countersign.setOnClickListener(this);
         logout = findViewById(R.id.logout);
         logout.setOnClickListener(this);
 
@@ -37,12 +37,12 @@ public class MainActivity extends AppCompatActivity
 
         int id = v.getId();
         switch (id) {
-            case R.id.btnGet:
+            case R.id.approvals:
                 cmd = new Command(this, 0,
-                        "http://10.0.2.2:50271/Disbursement/DeliveriesMobile", null);
+                        "http://10.0.2.2:50271/Requisition/PendingMobile", null);
                 new AsyncToServer().execute(cmd);
                 break;
-            case R.id.btnSRF:
+            case R.id.countersign:
                 cmd = new Command(this, 4,
                         "http://10.0.2.2:50271/Stationery/RetrievalMobile", null);
                 new AsyncToServer().execute(cmd);
@@ -76,8 +76,8 @@ public class MainActivity extends AppCompatActivity
             int checksum = jsonArr.getInt(jsonArr.length()-1);
             if(checksum == 0){
 
-                Intent dl = new Intent(this, DisburseList.class);
-                dl.putExtra("disbursejson", jsonArr.toString());
+                Intent dl = new Intent(this, DeptApprovalsList.class);
+                dl.putExtra("requisitions", jsonArr.toString());
 
                 startActivity(dl);
             }

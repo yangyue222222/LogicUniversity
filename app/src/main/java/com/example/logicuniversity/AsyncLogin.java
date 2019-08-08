@@ -25,18 +25,17 @@ public class AsyncLogin extends AsyncTask<LoginCommand, Void, JSONObject> {
         this.callback = lc.callback;
         StringBuilder response = new StringBuilder();
         JSONObject jo = null;
-        CookieManager cM = new CookieManager();
+        CookieManager cM = LoginActivity.cM;
 
         try {
             URL url = new URL(lc.endPt);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
+            conn.setRequestProperty("Cookie", TextUtils.join(";",  cM.getCookieStore().getCookies()));
             // send data
             if (lc.data != null) {
                 JSONObject login = new JSONObject(lc.data);
                 conn.setDoOutput(true);
                 conn.setRequestMethod("POST");
-                conn.setRequestProperty("Cookie", TextUtils.join(";",  cM.getCookieStore().getCookies()));
                 conn.setRequestProperty("Content-Type", "application/json; charset=utf-8");
                 DataOutputStream outstream = new DataOutputStream(conn.getOutputStream());
                 outstream.writeBytes(login.toString());

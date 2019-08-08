@@ -58,30 +58,55 @@ public class StationeryRetrievalForm extends AppCompatActivity implements AsyncT
             e.printStackTrace();
         }
         LinearLayout srfList = findViewById(R.id.srfList);
-        LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,3F);
+        LinearLayout.LayoutParams big = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,1F);
+        LinearLayout.LayoutParams small = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,2F);
 
+        LinearLayout header = new LinearLayout(this);
+        header.setLayoutParams(big);
+        header.setOrientation(LinearLayout.HORIZONTAL);
+
+        TextView des = new TextView(this);
+        des.setText("Description");
+        des.setLayoutParams(big);
+        header.addView(des);
+
+        TextView st = new TextView(this);
+        st.setText("Stock");
+        st.setLayoutParams(small);
+        header.addView(st);
+
+        TextView re = new TextView(this);
+        re.setText("Req");
+        re.setLayoutParams(small);
+        header.addView(re);
+
+        TextView co = new TextView(this);
+        co.setText("Col");
+        co.setLayoutParams(small);
+        header.addView(co);
+        srfList.addView(header);
         for(RetrievalItem i : srf){
             LinearLayout order = new LinearLayout(this);
-            order.setLayoutParams(p);
+            order.setLayoutParams(big);
             order.setOrientation(LinearLayout.HORIZONTAL);
 
             TextView tv1 = new TextView(this);
             tv1.setText(i.get("Description"));
-            tv1.setLayoutParams(p);
+            tv1.setLayoutParams(big);
             order.addView(tv1);
 
             TextView tv2 = new TextView(this);
             tv2.setText(i.get("StockQuantity"));
-            tv2.setLayoutParams(p);
+            tv2.setLayoutParams(small);
             order.addView(tv2);
 
             TextView tv3 = new TextView(this);
             tv3.setText(i.get("AllocatedQuantity"));
-            tv3.setLayoutParams(p);
+            tv3.setLayoutParams(small);
             order.addView(tv3);
 
             EditText input = new EditText(this);
-            input.setLayoutParams(p);
+            input.setLayoutParams(small);
             input.setInputType(InputType.TYPE_NUMBER_FLAG_DECIMAL);
             input.setId(parseInt(i.get("ItemId")));
             input.setText(i.get("AllocatedQuantity"));
@@ -126,10 +151,14 @@ public class StationeryRetrievalForm extends AppCompatActivity implements AsyncT
                 dd.put("ActualQuantity", String.valueOf(rQty));
                 output.add(dd);
             }
-            if (overdrawn == 0) {
-                JSONArray confirmation = new JSONArray(output);
-                Command cmd = new Command(this, 3, "http://10.0.2.2:50271/Disbursement/DisbursementsMobile", confirmation);
-                new AsyncToServer().execute(cmd);
+            if(output.isEmpty() != true)
+            {
+                if (overdrawn == 0) {
+                    JSONArray confirmation = new JSONArray(output);
+
+                    Command cmd = new Command(this, 3, "http://10.0.2.2:50271/Disbursement/DisbursementsMobile", confirmation);
+                    new AsyncToServer().execute(cmd);
+                }
             }
 
         }

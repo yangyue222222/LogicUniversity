@@ -5,15 +5,17 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.json.JSONObject;
 
+import java.net.CookieManager;
 
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, AsyncLogin.IServerResponse {
-
+    static CookieManager cM = new CookieManager();
     EditText username;
     EditText password;
     Button login;
@@ -43,10 +45,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return;
         try {
             int rank = jo.getInt("Rank");
-            if(rank == 4) {
-
+            if(rank == 4 || rank == 3 || rank == 2) {
                 Intent dl = new Intent(this, MainActivity.class);
                 startActivity(dl);
+            }
+            if(rank == 0 || rank == 5) {
+                Intent dl = new Intent(this, DeptActivity.class);
+                startActivity(dl);
+            }
+            if(rank == 99){
+                Toast.makeText(this, "Invalid username or password", Toast.LENGTH_LONG).show();
             }
         } catch (Exception e) {
             e.printStackTrace();

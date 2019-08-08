@@ -2,4 +2,7 @@
     <string name="app_name">LogicUniversity</string>
     <string name="btnGet">Retrieve Disbursements</string>
     <string name="btnSRF">Stationery Retrieval Form</string>
+    <string name="logout">Logout</string>
+    <string name="approvals">Pending Requisitions</string>
+    <string name="countersign">Receive Disbursements</string>
 </resources>

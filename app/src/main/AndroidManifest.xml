@@ -29,6 +29,14 @@
         </activity>
         <activity android:name=".StationeryRetrievalForm">
         </activity>
+
+        <activity android:name=".DeptActivity">
+        </activity>
+
+        <activity android:name=".DeptApprovalsList">
+        </activity>
+        <activity android:name=".DeptApproveRequest">
+        </activity>
     </application>
 
 </manifest>

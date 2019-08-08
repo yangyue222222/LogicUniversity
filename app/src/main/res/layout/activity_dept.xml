@@ -14,16 +14,16 @@
         android:orientation="vertical"
         android:layout_gravity="center">
         <Button
-            android:id="@+id/btnSRF"
+            android:id="@+id/approvals"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/btnSRF" />
+            android:text="@string/approvals" />
 
         <Button
-            android:id="@+id/btnGet"
+            android:id="@+id/countersign"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/btnGet" />
+            android:text="@string/countersign" />
         <Button
             android:id="@+id/logout"
             android:layout_width="match_parent"
