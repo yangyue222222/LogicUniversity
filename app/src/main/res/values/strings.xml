@@ -4,5 +4,6 @@
     <string name="btnSRF">Stationery Retrieval Form</string>
     <string name="logout">Logout</string>
     <string name="approvals">Pending Requisitions</string>
+    <string name="delegate">Delegate Authority</string>
     <string name="countersign">Receive Disbursements</string>
 </resources>

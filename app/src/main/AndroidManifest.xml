@@ -42,6 +42,8 @@
         </activity>
         <activity android:name=".DeptConfirmDelivery">
         </activity>
+        <activity android:name=".DeptDelegation">
+        </activity>
     </application>
 
 </manifest>

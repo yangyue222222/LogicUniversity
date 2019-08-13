@@ -15,6 +15,7 @@ public class DeptActivity extends AppCompatActivity
         implements View.OnClickListener, AsyncToServer.IServerResponse, AsyncLogin.IServerResponse {
 
     Button approvals;
+    Button delegate;
     Button countersign;
     Button logout;
     @Override
@@ -24,6 +25,8 @@ public class DeptActivity extends AppCompatActivity
 
         approvals = findViewById(R.id.approvals);
         approvals.setOnClickListener(this);
+        delegate = findViewById(R.id.delegate);
+        delegate.setOnClickListener(this);
         countersign = findViewById(R.id.countersign);
         countersign.setOnClickListener(this);
         logout = findViewById(R.id.logout);
@@ -40,6 +43,11 @@ public class DeptActivity extends AppCompatActivity
             case R.id.approvals:
                 cmd = new Command(this, 0,
                         "http://10.0.2.2:50271/Requisition/PendingMobile", null);
+                new AsyncToServer().execute(cmd);
+                break;
+            case R.id.delegate:
+                cmd = new Command(this, 8,
+                        "http://10.0.2.2:50271/Delegate/DelegationMobile", null);
                 new AsyncToServer().execute(cmd);
                 break;
             case R.id.countersign:
@@ -87,6 +95,22 @@ public class DeptActivity extends AppCompatActivity
                 dl.putExtra("confirmations", jsonArr.toString());
 
                 startActivity(dl);
+            }
+            if(checksum == 8){
+                try{
+                    JSONObject result = jsonArr.getJSONObject(0);
+                    String authCheck = result.getString("result");
+                    if(authCheck.compareTo("0") == 0){
+                        Toast.makeText(this, "You don't have the authority to access this function", Toast.LENGTH_LONG).show();
+                    }
+                }
+                catch (Exception e) {
+                    Intent dl = new Intent(this, DeptDelegation.class);
+                    dl.putExtra("employees", jsonArr.toString());
+
+                    startActivity(dl);
+                }
+
             }
         } catch (Exception e) {
             e.printStackTrace();
