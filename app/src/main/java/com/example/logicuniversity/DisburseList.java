@@ -48,7 +48,7 @@ public class DisburseList extends AppCompatActivity implements View.OnClickListe
         }
         ListView listView = findViewById(R.id.listView1);
         listView.setAdapter(new SimpleAdapter(this, dl,R.layout.disburserow,
-                new String[] {"id","deptName","representative"},
+                new String[] {"Id","DeptName","Representative"},
                 new int[]{R.id.rowpt1,R.id.rowpt2,R.id.rowpt3}));
         listView.setOnItemClickListener(this);
         Button back = findViewById(R.id.back);

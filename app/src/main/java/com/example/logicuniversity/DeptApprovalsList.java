@@ -54,7 +54,7 @@ public class DeptApprovalsList extends AppCompatActivity implements View.OnClick
         }
         ListView listView = findViewById(R.id.listView1);
         listView.setAdapter(new SimpleAdapter(this, rlist,R.layout.disburserow,
-                new String[] {"id","date","requestor"},
+                new String[] {"Id","Date","Requestor"},
                 new int[]{R.id.rowpt1,R.id.rowpt2,R.id.rowpt3}));
         listView.setOnItemClickListener(this);
         Button back = findViewById(R.id.back);

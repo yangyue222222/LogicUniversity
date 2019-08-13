@@ -5,5 +5,6 @@
     <string name="logout">Logout</string>
     <string name="approvals">Pending Requisitions</string>
     <string name="delegate">Delegate Authority</string>
+    <string name="pup">Set Pick Up Point</string>
     <string name="countersign">Receive Disbursements</string>
 </resources>

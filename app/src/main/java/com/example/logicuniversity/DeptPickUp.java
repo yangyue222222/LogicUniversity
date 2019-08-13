@@ -7,6 +7,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,66 +18,58 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DeptDelegation extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener, AsyncToServer.IServerResponse  {
+public class DeptPickUp extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemClickListener, AsyncToServer.IServerResponse  {
 
     JSONArray jsonArr;
     String reqId;
+    String currentLocation;
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_disburselist);
-        List<Employee> elist = new ArrayList<>();
+        setContentView(R.layout.activity_pickup);
+        List<PickUpPoint> plist = new ArrayList<>();
         Bundle extras = getIntent().getExtras();
         try {
-            jsonArr = new JSONArray(extras.getString("employees"));
+            jsonArr = new JSONArray(extras.getString("points"));
             String id;
-            String name;
-            String rank;
+            String time;
+            String location;
 
-            for (int i = 0; i < jsonArr.length()-1; i++) {
+            for (int i = 0; i < jsonArr.length()-2; i++) {
                 JSONObject jsonobject = jsonArr.getJSONObject(i);
-                id = jsonobject.getString("UserId");
-                name = jsonobject.getString("Name");
-                rank = jsonobject.getString("Rank");
-                switch(rank) {
-                    case "1":
-                        rank = "Employee";
-                        break;
-                    case "5":
-                        rank = "TemporaryHead";
-                        break;
-                }
-                Employee e = new Employee(id, name, rank);
-                if(rank.compareTo("0") != 0) {
-                    elist.add(e);
-                }
+                id = jsonobject.getString("PickUpPointId");
+                time = jsonobject.getString("PickUpTime");
+                location = jsonobject.getString("Location");
+
+                PickUpPoint p = new PickUpPoint(id, time, location);
+                plist.add(p);
             }
+            JSONObject curLoc = jsonArr.getJSONObject(jsonArr.length()-2);
+            currentLocation = curLoc.getString("Location") + ",  " + curLoc.getString("PickUpTime");
         }
         catch(Exception e)
         {
             e.printStackTrace();
-            Toast.makeText(this, "You don't have the authority to access this function", Toast.LENGTH_LONG).show();
         }
         ListView listView = findViewById(R.id.listView1);
-        listView.setAdapter(new SimpleAdapter(this, elist,R.layout.disburserow,
-                new String[] {"Id","Name","Rank"},
-                new int[]{R.id.rowpt1,R.id.rowpt2,R.id.rowpt3}));
+        listView.setAdapter(new SimpleAdapter(this, plist,R.layout.puprow,
+                new String[] {"Location","PickUpTime"},
+                new int[]{R.id.rowpt1,R.id.rowpt2}));
         listView.setOnItemClickListener(this);
+        TextView curLoc = findViewById(R.id.curLoc);
+        curLoc.setText("Current Pick Up Point: " + currentLocation);
         Button back = findViewById(R.id.back);
         back.setOnClickListener(this);
     }
 
     @Override
     public void onItemClick(AdapterView<?> av, View v, int pos, long id){
-        Employee e = (Employee) av.getItemAtPosition(pos);
-        reqId = e.get("Id");
-        String option = "2";
-        if(e.get("Rank").compareTo("Employee") == 0) {
-            option = "1";
-        }
+        PickUpPoint p = (PickUpPoint) av.getItemAtPosition(pos);
+        reqId = p.get("Id");
+
         Command cmd = new Command(this, 9,
-                "http://10.0.2.2:50271/DelegateAuthMobile/"+e.get("Id")+"/"+option, null);
+                "http://10.0.2.2:50271/PickUpPointMobile/"+p.get("Id"), null);
         System.out.println(cmd.endPt);
         new AsyncToServer().execute(cmd);
     }
@@ -98,14 +91,14 @@ public class DeptDelegation extends AppCompatActivity implements View.OnClickLis
         try {
             int checksum = jsonArr.getInt(jsonArr.length()-1);
             if(checksum == 9){
-                Toast.makeText(this, "Assignment updated", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Pick Up Point updated", Toast.LENGTH_LONG).show();
                 Command cmd = new Command(this, 8,
-                        "http://10.0.2.2:50271/Delegate/DelegationMobile", null);
+                        "http://10.0.2.2:50271/Delegate/PickUpPointMobile", null);
                 new AsyncToServer().execute(cmd);
             }
             if(checksum == 8){
-                Intent dl = new Intent(this, DeptDelegation.class);
-                dl.putExtra("employees", jsonArr.toString());
+                Intent dl = new Intent(this, DeptPickUp.class);
+                dl.putExtra("points", jsonArr.toString());
                 startActivity(dl);
             }
         } catch (Exception e) {
