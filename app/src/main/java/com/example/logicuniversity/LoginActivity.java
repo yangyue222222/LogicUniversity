@@ -49,7 +49,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Intent dl = new Intent(this, MainActivity.class);
                 startActivity(dl);
             }
-            if(rank == 0 || rank == 5) {
+            if(rank == 0 || rank == 1 || rank == 5) {
                 Intent dl = new Intent(this, DeptActivity.class);
                 startActivity(dl);
             }
