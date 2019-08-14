@@ -99,38 +99,28 @@ public class DeptActivity extends AppCompatActivity
             }
             if(checksum == 4){
 
-                Intent dl = new Intent(this, DeptConfirmationList.class);
-                dl.putExtra("confirmations", jsonArr.toString());
+                    Intent dl = new Intent(this, DeptConfirmationList.class);
+                    dl.putExtra("confirmations", jsonArr.toString());
 
-                startActivity(dl);
+                    startActivity(dl);
             }
             if(checksum == 6){
-                try{
-                    JSONObject result = jsonArr.getJSONObject(0);
-                    String authCheck = result.getString("result");
-                    if(authCheck.compareTo("0") == 0){
-                        Toast.makeText(this, "You don't have the authority to access this function", Toast.LENGTH_LONG).show();
-                    }
-                }
-                catch (Exception e) {
+                if(jsonArr.length() == 1)
+                {
+                    Toast.makeText(this, "You don't have permission to access this.", Toast.LENGTH_LONG).show();
+                }else {
                     Intent dl = new Intent(this, DeptPickUp.class);
                     dl.putExtra("points", jsonArr.toString());
-
                     startActivity(dl);
                 }
             }
             if(checksum == 8){
-                try{
-                    JSONObject result = jsonArr.getJSONObject(0);
-                    String authCheck = result.getString("result");
-                    if(authCheck.compareTo("0") == 0){
-                        Toast.makeText(this, "You don't have the authority to access this function", Toast.LENGTH_LONG).show();
-                    }
-                }
-                catch (Exception e) {
+                if(jsonArr.length() == 1)
+                {
+                    Toast.makeText(this, "You don't have permission to access this.", Toast.LENGTH_LONG).show();
+                }else {
                     Intent dl = new Intent(this, DeptDelegation.class);
                     dl.putExtra("employees", jsonArr.toString());
-
                     startActivity(dl);
                 }
             }

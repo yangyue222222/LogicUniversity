@@ -64,9 +64,9 @@ public class DeptApprovalsList extends AppCompatActivity implements View.OnClick
     @Override
     public void onItemClick(AdapterView<?> av, View v, int pos, long id){
         Requisition r = (Requisition) av.getItemAtPosition(pos);
-        reqId = r.get("id");
+        reqId = r.get("Id");
         Command cmd = new Command(this, 9,
-                "http://10.0.2.2:50271/Requisitions/"+r.get("id"), null);
+                "http://10.0.2.2:50271/Requisitions/"+r.get("Id"), null);
         System.out.println(cmd.endPt);
         new AsyncToServer().execute(cmd);
     }

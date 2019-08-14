@@ -13,6 +13,8 @@ import java.io.InputStreamReader;
 import java.net.CookieManager;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AsyncToServer extends AsyncTask<Command, Void, JSONArray> {
     IServerResponse callback;
@@ -52,9 +54,13 @@ public class AsyncToServer extends AsyncTask<Command, Void, JSONArray> {
                 jsonArr.put(cmd.checksum);
             } catch (Exception e) {
                 e.printStackTrace();
+                List<Integer> result = new ArrayList<>();
+                result.add(0,cmd.checksum);
+                return new JSONArray(result);
             }
         } catch (Exception e) {
             e.printStackTrace();
+
         }
 
         return jsonArr;

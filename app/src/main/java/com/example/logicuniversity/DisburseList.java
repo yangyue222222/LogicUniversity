@@ -60,7 +60,7 @@ public class DisburseList extends AppCompatActivity implements View.OnClickListe
         Disbursement d = (Disbursement) av.getItemAtPosition(pos);
         Intent dl = new Intent(this, DisburseOrder.class);
         dl.putExtra("disbursejson", jsonArr.toString());
-        dl.putExtra("id", d.get("id"));
+        dl.putExtra("id", d.get("Id"));
         startActivity(dl);
     }
     @Override

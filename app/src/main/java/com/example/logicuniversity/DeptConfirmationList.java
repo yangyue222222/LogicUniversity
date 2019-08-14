@@ -45,7 +45,7 @@ public class DeptConfirmationList extends AppCompatActivity implements View.OnCl
         }
         ListView listView = findViewById(R.id.listView1);
         listView.setAdapter(new SimpleAdapter(this, dl,R.layout.disburserow,
-                new String[] {"id","deptName","representative"},
+                new String[] {"Id","DeptName","Representative"},
                 new int[]{R.id.rowpt1,R.id.rowpt2,R.id.rowpt3}));
         listView.setOnItemClickListener(this);
         Button back = findViewById(R.id.back);
@@ -57,7 +57,7 @@ public class DeptConfirmationList extends AppCompatActivity implements View.OnCl
         Disbursement d = (Disbursement) av.getItemAtPosition(pos);
         Intent dl = new Intent(this, DeptConfirmDelivery.class);
         dl.putExtra("confirmations", jsonArr.toString());
-        dl.putExtra("id", d.get("id"));
+        dl.putExtra("id", d.get("Id"));
         startActivity(dl);
     }
     @Override
