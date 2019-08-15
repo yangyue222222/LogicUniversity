@@ -100,7 +100,7 @@ public class DeptDelegation extends AppCompatActivity implements View.OnClickLis
             if(checksum == 9){
                 Toast.makeText(this, "Assignment updated", Toast.LENGTH_LONG).show();
                 Command cmd = new Command(this, 8,
-                        "http://10.0.2.2:50271/Delegate/DelegationMobile", null);
+                        "http://10.0.2.2:50271/delegatemobile", null);
                 new AsyncToServer().execute(cmd);
             }
             if(checksum == 8){

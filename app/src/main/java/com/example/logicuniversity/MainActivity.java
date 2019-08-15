@@ -39,16 +39,16 @@ public class MainActivity extends AppCompatActivity
         switch (id) {
             case R.id.btnGet:
                 cmd = new Command(this, 0,
-                        "http://10.0.2.2:50271/Disbursement/DeliveriesMobile", null);
+                        "http://10.0.2.2:50271/deliveriesmobile", null);
                 new AsyncToServer().execute(cmd);
                 break;
             case R.id.btnSRF:
                 cmd = new Command(this, 4,
-                        "http://10.0.2.2:50271/Stationery/RetrievalMobile", null);
+                        "http://10.0.2.2:50271/retrievalmobile", null);
                 new AsyncToServer().execute(cmd);
                 break;
             case R.id.logout:
-                LoginCommand lc = new LoginCommand(this, "http://10.0.2.2:50271/Auth/LogoutMobile", null);
+                LoginCommand lc = new LoginCommand(this, "http://10.0.2.2:50271/logoutmobile", null);
                 new AsyncLogin().execute(lc);
                 break;
         }

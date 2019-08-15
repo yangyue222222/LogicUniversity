@@ -93,7 +93,7 @@ public class DeptPickUp extends AppCompatActivity implements View.OnClickListene
             if(checksum == 9){
                 Toast.makeText(this, "Pick Up Point updated", Toast.LENGTH_LONG).show();
                 Command cmd = new Command(this, 8,
-                        "http://10.0.2.2:50271/Delegate/PickUpPointMobile", null);
+                        "http://10.0.2.2:50271/pickupmobile", null);
                 new AsyncToServer().execute(cmd);
             }
             if(checksum == 8){

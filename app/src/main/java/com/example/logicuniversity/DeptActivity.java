@@ -45,17 +45,17 @@ public class DeptActivity extends AppCompatActivity
         switch (id) {
             case R.id.approvals:
                 cmd = new Command(this, 0,
-                        "http://10.0.2.2:50271/Requisition/PendingMobile", null);
+                        "http://10.0.2.2:50271/pendingreqmobile", null);
                 new AsyncToServer().execute(cmd);
                 break;
             case R.id.delegate:
                 cmd = new Command(this, 8,
-                        "http://10.0.2.2:50271/Delegate/DelegationMobile", null);
+                        "http://10.0.2.2:50271/delegatemobile", null);
                 new AsyncToServer().execute(cmd);
                 break;
             case R.id.pup:
                 cmd = new Command(this, 6,
-                        "http://10.0.2.2:50271/Delegate/PickUpPointMobile", null);
+                        "http://10.0.2.2:50271/pickupmobile", null);
                 new AsyncToServer().execute(cmd);
                 break;
             case R.id.countersign:
@@ -64,7 +64,7 @@ public class DeptActivity extends AppCompatActivity
                 new AsyncToServer().execute(cmd);
                 break;
             case R.id.logout:
-                LoginCommand lc = new LoginCommand(this, "http://10.0.2.2:50271/Auth/LogoutMobile", null);
+                LoginCommand lc = new LoginCommand(this, "http://10.0.2.2:50271/logoutmobile", null);
                 new AsyncLogin().execute(lc);
                 break;
         }
@@ -91,11 +91,15 @@ public class DeptActivity extends AppCompatActivity
         try {
             int checksum = jsonArr.getInt(jsonArr.length()-1);
             if(checksum == 0){
-
+                if(jsonArr.length() == 1)
+                {
+                    Toast.makeText(this, "No requisitions pending your review.", Toast.LENGTH_LONG).show();
+                }else {
                 Intent dl = new Intent(this, DeptApprovalsList.class);
                 dl.putExtra("requisitions", jsonArr.toString());
 
                 startActivity(dl);
+                }
             }
             if(checksum == 4){
 

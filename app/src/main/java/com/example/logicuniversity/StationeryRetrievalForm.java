@@ -156,7 +156,7 @@ public class StationeryRetrievalForm extends AppCompatActivity implements AsyncT
                 if (overdrawn == 0) {
                     JSONArray confirmation = new JSONArray(output);
 
-                    Command cmd = new Command(this, 3, "http://10.0.2.2:50271/Disbursement/DisbursementsMobile", confirmation);
+                    Command cmd = new Command(this, 3, "http://10.0.2.2:50271/disbursementsmobile", confirmation);
                     new AsyncToServer().execute(cmd);
                 }
             }

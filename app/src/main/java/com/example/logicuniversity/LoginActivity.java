@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String name = username.getText().toString();
         String pass = password.getText().toString();
         User login = new User(name,pass);
-        LoginCommand lc = new LoginCommand(this, "http://10.0.2.2:50271/Auth/LoginMobile", login);
+        LoginCommand lc = new LoginCommand(this, "http://10.0.2.2:50271/loginmobile", login);
         new AsyncLogin().execute(lc);
 
     }
@@ -45,15 +45,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return;
         try {
             int rank = jo.getInt("Rank");
-            if(rank == 4 || rank == 3 || rank == 2) {
-                Intent dl = new Intent(this, MainActivity.class);
+            Intent dl;
+            switch(rank){
+                case 4:
+                dl = new Intent(this, MainActivity.class);
                 startActivity(dl);
-            }
-            if(rank == 0 || rank == 1 || rank == 5) {
-                Intent dl = new Intent(this, DeptActivity.class);
+                break;
+                case 0:
+                case 1:
+                case 5:
+                dl = new Intent(this, DeptActivity.class);
                 startActivity(dl);
-            }
-            if(rank == 99){
+                break;
+                case 2:
+                case 3:
+                Toast.makeText(this, "Only store clerks can use this mobile application", Toast.LENGTH_LONG).show();
+                break;
+                case 99:
+                default:
                 Toast.makeText(this, "Invalid username or password", Toast.LENGTH_LONG).show();
             }
         } catch (Exception e) {

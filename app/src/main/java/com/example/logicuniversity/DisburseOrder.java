@@ -118,7 +118,7 @@ public class DisburseOrder extends AppCompatActivity implements AsyncToServer.IS
             int checksum = jsonArr.getInt(jsonArr.length()-1);
             if(checksum == 2){
                 Toast.makeText(this,"Disbursement recorded", Toast.LENGTH_LONG).show();
-                Command cmd = new Command(this, 0,"http://10.0.2.2:50271/Disbursement/DeliveriesMobile", null);
+                Command cmd = new Command(this, 0,"http://10.0.2.2:50271/deliveriesmobile", null);
                 new AsyncToServer().execute(cmd);
             }
             if(checksum == 0){
@@ -149,7 +149,7 @@ public class DisburseOrder extends AppCompatActivity implements AsyncToServer.IS
         }
         if(overdeliver == 0) {
             JSONArray confirmation = new JSONArray(output);
-            Command cmd = new Command(this, 2,"http://10.0.2.2:50271/Disbursement/ReceivingMobile", confirmation);
+            Command cmd = new Command(this, 2,"http://10.0.2.2:50271/receivingmobile", confirmation);
             new AsyncToServer().execute(cmd);
         }
     }

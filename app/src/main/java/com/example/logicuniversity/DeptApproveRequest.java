@@ -2,11 +2,9 @@ package com.example.logicuniversity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.InputType;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,8 +16,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static java.lang.Integer.parseInt;
 
 public class DeptApproveRequest extends AppCompatActivity implements AsyncToServer.IServerResponse, View.OnClickListener {
     List<RequisitionDetail> rl = new ArrayList<>();
@@ -100,12 +96,12 @@ public class DeptApproveRequest extends AppCompatActivity implements AsyncToServ
             int checksum = jsonArr.getInt(jsonArr.length() - 1);
             if (checksum == 0) {
                 Toast.makeText(this, "Approval recorded", Toast.LENGTH_LONG).show();
-                Command cmd = new Command(this, 2, "http://10.0.2.2:50271/Requisition/PendingMobile", null);
+                Command cmd = new Command(this, 2, "http://10.0.2.2:50271/pendingreqmobile", null);
                 new AsyncToServer().execute(cmd);
             }
             if (checksum == 1) {
                 Toast.makeText(this, "Rejection recorded", Toast.LENGTH_LONG).show();
-                Command cmd = new Command(this, 2, "http://10.0.2.2:50271/Requisition/PendingMobile", null);
+                Command cmd = new Command(this, 2, "http://10.0.2.2:50271/pendingreqmobile", null);
                 new AsyncToServer().execute(cmd);
             }
             if(checksum == 2){
